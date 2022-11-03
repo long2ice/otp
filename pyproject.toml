@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "otp"
+version = "0.1.0"
+description = ""
+authors = ["long2ice <long2ice@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+sentry-sdk = { version = "*", extras = ["fastapi"] }
+aerich = "*"
+tortoise-orm = { version = "*", extras = ["asyncmy"] }
+fastapi = "*"
+uvicorn = "*"
+loguru = "*"
+python-dotenv = "*"
+pyotp = "*"
+pyjwt = "*"
+wechatpy = "*"
+httpx = {version = "*", extras = ["http2"]}
+aiofiles = "^22.1.0"
+
+[tool.poetry.dev-dependencies]
+black = "*"
+isort = "*"
+mypy = "*"
+pytest = "*"
+pytest-asyncio = "*"
+ruff = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.aerich]
+tortoise_orm = "otp.settings.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 100
+target-version = ['py36', 'py37', 'py38', 'py39']
+
+[tool.pytest.ini_options]
+asyncio_mode = 'auto'
+
+[tool.mypy]
+ignore_missing_imports = true
+pretty = true
+
+[tool.ruff]
+line-length = 100
