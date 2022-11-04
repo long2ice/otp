@@ -1,6 +1,5 @@
 from io import BytesIO
 
-import httpx
 from fastapi import APIRouter
 from starlette.responses import FileResponse, StreamingResponse
 

@@ -5,9 +5,9 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     return """
         CREATE TABLE IF NOT EXISTS `user` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `email` VARCHAR(255) NOT NULL UNIQUE,
-    `secret` VARCHAR(255) NOT NULL,
-    `password` VARCHAR(255) NOT NULL,
+    `nickname` VARCHAR(50),
+    `avatar` VARCHAR(200),
+    `openid` VARCHAR(200) NOT NULL UNIQUE,
     `created_at` DATETIME(6) NOT NULL  DEFAULT CURRENT_TIMESTAMP(6),
     `updated_at` DATETIME(6) NOT NULL  DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 ) CHARACTER SET utf8mb4;

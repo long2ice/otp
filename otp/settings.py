@@ -5,8 +5,11 @@ import sentry_sdk
 from pydantic import BaseSettings
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TFA_ICON_DIR = os.path.join(BASE_DIR, 'static', "tfa")
-DEFAULT_ICON_PATH = os.path.join(TFA_ICON_DIR, 'tfa.svg')
+TFA_ICON_DIR = os.path.join(BASE_DIR, "static", "tfa")
+DEFAULT_ICON_PATH = os.path.join(TFA_ICON_DIR, "tfa.svg")
+JWT_ALGORITHM = "HS256"
+TFA_JSON_URL = "https://2fa.directory/api/v3/tfa.json"
+TFA_JSON_PATH = os.path.join(TFA_ICON_DIR, "tfa.json")
 
 
 class Settings(BaseSettings):
@@ -15,6 +18,8 @@ class Settings(BaseSettings):
     SECRET: str
     ENV = "production"
     SENTRY_DSN: Optional[str]
+    WECHAT_APP_ID: str
+    WECHAT_APP_SECRET: str
 
     class Config:
         env_file = ".env"

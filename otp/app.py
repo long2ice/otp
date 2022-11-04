@@ -1,9 +1,9 @@
 from aerich import Command
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
+from fastapi.staticfiles import StaticFiles
 from tortoise.contrib.fastapi import register_tortoise
 from tortoise.exceptions import DoesNotExist
-from fastapi.staticfiles import StaticFiles
 
 from otp import tfa
 from otp.exceptions import (

@@ -2,9 +2,9 @@ from tortoise import Model, fields
 
 
 class User(Model):
-    email = fields.CharField(max_length=255, unique=True)
-    secret = fields.CharField(max_length=255)
-    password = fields.CharField(max_length=255)
+    nickname = fields.CharField(max_length=50, null=True)
+    avatar = fields.CharField(max_length=200, null=True)
+    openid = fields.CharField(max_length=200, unique=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 

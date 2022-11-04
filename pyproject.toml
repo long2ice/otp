@@ -19,6 +19,7 @@ pyjwt = "*"
 wechatpy = "*"
 httpx = {version = "*", extras = ["http2"]}
 aiofiles = "^22.1.0"
+cryptography = "*"
 
 [tool.poetry.dev-dependencies]
 black = "*"
@@ -27,6 +28,9 @@ mypy = "*"
 pytest = "*"
 pytest-asyncio = "*"
 ruff = "*"
+
+[tool.poetry.group.dev.dependencies]
+types-aiofiles = "^22.1.0"
 
 [build-system]
 requires = ["poetry-core"]
