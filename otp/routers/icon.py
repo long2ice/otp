@@ -12,11 +12,15 @@ router = APIRouter()
 @router.get("/{issuer}.svg")
 async def get_issuer_icon(issuer: str):
     domain = get_issuer_domain(issuer)
-    default_response = FileResponse(DEFAULT_ICON_PATH, media_type="image/svg+xml")
+    response = FileResponse(DEFAULT_ICON_PATH, media_type="image/svg+xml")
+    cache_control = "public, max-age=86400"
+    response.headers["Cache-Control"] = cache_control
     if not domain:
-        return default_response
+        return response
     else:
         icon = await get_tfa_icon(domain)
         if not icon:
-            return default_response
-        return StreamingResponse(BytesIO(icon), media_type="image/svg+xml")
+            return response
+        response = StreamingResponse(BytesIO(icon), media_type="image/svg+xml")
+        response.headers["Cache-Control"] = cache_control
+        return response
