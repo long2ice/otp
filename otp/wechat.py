@@ -16,14 +16,14 @@ class Session(BaseModel):
     openid: Optional[str]
     session_key: Optional[str]
     unionid: Optional[str]
-    errcode: int
-    errmsg: str
+    errcode: Optional[int]
+    errmsg: Optional[str]
 
 
 async def code_to_session(code: str):
     data = await run_async(wxa.code_to_session, code)
     session = Session.parse_obj(data)
-    if session.errcode != 0:
+    if session.errcode is not None and session.errmsg is not None:
         raise Code2SessionError(session.errcode, session.errmsg)
     return session
 

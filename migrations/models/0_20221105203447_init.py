@@ -5,18 +5,20 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     return """
         CREATE TABLE IF NOT EXISTS `user` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `nickname` VARCHAR(50),
-    `avatar` VARCHAR(200),
     `openid` VARCHAR(200) NOT NULL UNIQUE,
+    `expired_date` DATE,
     `created_at` DATETIME(6) NOT NULL  DEFAULT CURRENT_TIMESTAMP(6),
     `updated_at` DATETIME(6) NOT NULL  DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 ) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `otp` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `secret` VARCHAR(255) NOT NULL,
+    `uri` VARCHAR(255) NOT NULL UNIQUE,
+    `is_active` BOOL NOT NULL  DEFAULT 1,
     `created_at` DATETIME(6) NOT NULL  DEFAULT CURRENT_TIMESTAMP(6),
+    `updated_at` DATETIME(6) NOT NULL  DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     `deleted_at` DATETIME(6),
     `user_id` INT NOT NULL,
+    UNIQUE KEY `uid_otp_user_id_0422fa` (`user_id`, `uri`),
     CONSTRAINT `fk_otp_user_ad9d4e83` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `aerich` (

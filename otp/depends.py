@@ -1,15 +1,18 @@
 import jwt
-from fastapi import Header, HTTPException
+from fastapi import Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 from otp.models import User
 from otp.settings import JWT_ALGORITHM, settings
 
+auth_scheme = HTTPBearer()
 
-async def auth_required(authorization: str = Header(...)):
+
+async def auth_required(token: HTTPAuthorizationCredentials = Depends(auth_scheme)):
     invalid_token = HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Invalid token")
     try:
-        data = jwt.decode(authorization, settings.SECRET, algorithms=[JWT_ALGORITHM])
+        data = jwt.decode(token.credentials, settings.SECRET, algorithms=[JWT_ALGORITHM])
     except jwt.DecodeError:
         raise invalid_token
     except jwt.ExpiredSignatureError:

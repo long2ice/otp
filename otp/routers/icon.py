@@ -21,6 +21,6 @@ async def get_issuer_icon(issuer: str):
         icon = await get_tfa_icon(domain)
         if not icon:
             return response
-        response = StreamingResponse(BytesIO(icon), media_type="image/svg+xml")
+        response = StreamingResponse(BytesIO(icon), media_type="image/svg+xml")  # type: ignore
         response.headers["Cache-Control"] = cache_control
         return response
