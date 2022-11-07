@@ -20,6 +20,7 @@ wechatpy = "*"
 httpx = {version = "*", extras = ["http2"]}
 aiofiles = "^22.1.0"
 cryptography = "*"
+cachetools = "*"
 
 [tool.poetry.dev-dependencies]
 black = "*"
@@ -28,6 +29,7 @@ mypy = "*"
 pytest = "*"
 pytest-asyncio = "*"
 ruff = "*"
+types-cachetools = "*"
 
 [tool.poetry.group.dev.dependencies]
 types-aiofiles = "^22.1.0"

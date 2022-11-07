@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     SENTRY_DSN: Optional[str]
     WECHAT_APP_ID: str
     WECHAT_APP_SECRET: str
+    API_SECRET: str
 
     class Config:
         env_file = ".env"

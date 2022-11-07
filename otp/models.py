@@ -1,20 +1,29 @@
 from tortoise import Model, fields
 
 
-class User(Model):
-    openid = fields.CharField(max_length=200, unique=True)
-    expired_date = fields.DateField(null=True)
+class TimestampedModel(Model):
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 
+    class Meta:
+        abstract = True
 
-class Otp(Model):
+
+class User(TimestampedModel):
+    openid = fields.CharField(max_length=200, unique=True)
+    expired_date = fields.DateField(null=True)
+
+
+class Otp(TimestampedModel):
     user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField("models.User")
     uri = fields.CharField(max_length=255, unique=True)
     is_active = fields.BooleanField(default=True)
-    created_at = fields.DatetimeField(auto_now_add=True)
-    updated_at = fields.DatetimeField(auto_now=True)
     deleted_at = fields.DatetimeField(null=True)
 
     class Meta:
         unique_together = [("user", "uri")]
+
+
+class Feedback(TimestampedModel):
+    user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField("models.User")
+    content = fields.TextField()
