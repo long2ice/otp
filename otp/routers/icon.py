@@ -13,7 +13,7 @@ router = APIRouter()
 async def get_issuer_icon(issuer: str):
     domain = get_issuer_domain(issuer)
     response = FileResponse(DEFAULT_ICON_PATH, media_type="image/svg+xml")
-    cache_control = "public, max-age=86400"
+    cache_control = "public, max-age=31536000"
     response.headers["Cache-Control"] = cache_control
     if not domain:
         return response
