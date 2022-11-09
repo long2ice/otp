@@ -1,5 +1,6 @@
 import datetime
 import hashlib
+import json
 import time
 from json import JSONDecodeError
 from typing import Dict
@@ -43,7 +44,10 @@ def get_sign(data: Dict, timestamp: int, nonce: str):
     for key, value in data.items():
         if value is None:
             continue
-        value_str = str(value)
+        if isinstance(value, (list, dict)):
+            value_str = json.dumps(value)
+        else:
+            value_str = str(value)
         kvs.append(f"{key}={value_str}")
     to_encode_str = "&".join(sorted(kvs))
     to_encode_str = f"{to_encode_str}&key={settings.API_SECRET}"
@@ -58,8 +62,6 @@ async def sign_required(
     x_nonce: constr(curtail_length=8) = Header(..., example="11111111"),  # type:ignore
     x_timestamp: int = Header(..., example=int(time.time())),
 ):
-    if settings.DEBUG:
-        return
     if request.url.path in ["/docs", "/openapi.json"]:
         return
     if request.method in ["GET", "DELETE"]:
