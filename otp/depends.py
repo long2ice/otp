@@ -45,7 +45,7 @@ def get_sign(data: Dict, timestamp: int, nonce: str):
         if value is None:
             continue
         if isinstance(value, (list, dict)):
-            value_str = json.dumps(value)
+            value_str = json.dumps(value, separators=(',', ':'), ensure_ascii=False)
         else:
             value_str = str(value)
         kvs.append(f"{key}={value_str}")
@@ -57,10 +57,10 @@ def get_sign(data: Dict, timestamp: int, nonce: str):
 
 
 async def sign_required(
-    request: Request,
-    x_sign: str = Header(..., example="sign"),
-    x_nonce: constr(curtail_length=8) = Header(..., example="11111111"),  # type:ignore
-    x_timestamp: int = Header(..., example=int(time.time())),
+        request: Request,
+        x_sign: str = Header(..., example="sign"),
+        x_nonce: constr(curtail_length=8) = Header(..., example="11111111"),  # type:ignore
+        x_timestamp: int = Header(..., example=int(time.time())),
 ):
     if request.url.path in ["/docs", "/openapi.json"]:
         return
