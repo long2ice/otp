@@ -12,6 +12,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import constr
 from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN
+from tortoise import timezone
 
 from otp.models import User
 from otp.settings import JWT_ALGORITHM, settings
@@ -80,3 +81,8 @@ async def sign_required(
     verified = get_sign(data, x_timestamp, x_nonce) == x_sign
     if not verified:
         raise HTTPException(detail="Signature verify failed", status_code=HTTP_403_FORBIDDEN)
+
+
+async def check_expired(user=Depends(auth_required)):
+    if user.expired_date and user.expired_date < timezone.now():
+        raise HTTPException(detail="Cloud service expired", status_code=HTTP_403_FORBIDDEN)
