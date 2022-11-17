@@ -11,6 +11,6 @@ check:
 	@mypy $(checkfiles)
 
 test:
-	$(py_warn) pytest
+	$(py_warn) pytest --suppress-no-test-exit-code
 
 ci: check test

@@ -21,6 +21,7 @@ httpx = {version = "*", extras = ["http2"]}
 aiofiles = "^22.1.0"
 cryptography = "*"
 cachetools = "*"
+pytest-custom-exit-code = "*"
 
 [tool.poetry.dev-dependencies]
 black = "*"
