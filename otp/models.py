@@ -11,6 +11,7 @@ class TimestampedModel(Model):
 
 class User(TimestampedModel):
     openid = fields.CharField(max_length=200, unique=True)
+    is_cloud_enabled = fields.BooleanField(default=False)
     expired_date = fields.DateField(null=True)
 
 

@@ -19,4 +19,4 @@ async def login(body: LoginBody):
     session = await code_to_session(body.code)
     user, created = await User.get_or_create(openid=session.openid)
     token = jwt.encode({"user_id": user.pk}, settings.SECRET, algorithm=JWT_ALGORITHM)
-    return responses.LoginResponse(token=token, user=responses.User(expired_date=user.expired_date))
+    return responses.LoginResponse(token=token, user=user)

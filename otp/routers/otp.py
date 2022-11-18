@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from tortoise import timezone
 
-from otp.depends import auth_required, check_expired
+from otp.depends import auth_required, cloud_enabled
 from otp.models import Otp
 from otp.responses import Recycle
 
@@ -19,7 +19,7 @@ class DeleteBody(BaseModel):
     uri: str
 
 
-@router.post("", dependencies=[Depends(check_expired)])
+@router.post("", dependencies=[Depends(cloud_enabled)])
 async def add_otp_list(body: OTPBody, user=Depends(auth_required)):
     for uri in body.uris:
         await Otp.get_or_create(user=user, uri=uri)
@@ -45,16 +45,16 @@ async def get_otp_recycle_list(user=Depends(auth_required)):
     return data
 
 
-@router.put("", dependencies=[Depends(check_expired)])
+@router.put("", dependencies=[Depends(cloud_enabled)])
 async def delete_otp(body: DeleteBody, user=Depends(auth_required)):
     await Otp.filter(uri=body.uri, user=user).update(is_active=False)
 
 
-@router.delete("/{pk}/recycle", dependencies=[Depends(check_expired)])
+@router.delete("/{pk}/recycle", dependencies=[Depends(cloud_enabled)])
 async def delete_recycle(pk: int, user=Depends(auth_required)):
     await Otp.filter(pk=pk, user=user).update(deleted_at=timezone.now())
 
 
-@router.put("/{pk}/restore", dependencies=[Depends(check_expired)])
+@router.put("/{pk}/restore", dependencies=[Depends(cloud_enabled)])
 async def restore_otp(pk: int, user=Depends(auth_required)):
     await Otp.filter(pk=pk, user=user).update(is_active=True)

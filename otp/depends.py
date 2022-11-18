@@ -47,6 +47,8 @@ def get_sign(data: Dict, timestamp: int, nonce: str):
             continue
         if isinstance(value, (list, dict)):
             value_str = json.dumps(value, separators=(",", ":"), ensure_ascii=False)
+        elif isinstance(value, bool):
+            value_str = str(value).lower()
         else:
             value_str = str(value)
         kvs.append(f"{key}={value_str}")
@@ -83,6 +85,8 @@ async def sign_required(
         raise HTTPException(detail="Signature verify failed", status_code=HTTP_403_FORBIDDEN)
 
 
-async def check_expired(user=Depends(auth_required)):
+async def cloud_enabled(user=Depends(auth_required)):
     if user.expired_date and user.expired_date < timezone.now():
         raise HTTPException(detail="Cloud service expired", status_code=HTTP_403_FORBIDDEN)
+    if not user.is_cloud_enabled:
+        raise HTTPException(detail="Cloud service disabled", status_code=HTTP_403_FORBIDDEN)

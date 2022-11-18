@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 class User(BaseModel):
     expired_date: Optional[date]
+    is_cloud_enabled: bool
 
 
 class LoginResponse(BaseModel):
