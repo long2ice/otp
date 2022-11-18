@@ -4,7 +4,6 @@ from typing import List
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from tortoise import timezone
-from tortoise.expressions import RawSQL
 
 from otp.depends import auth_required, cloud_enabled
 from otp.models import Otp
@@ -50,9 +49,7 @@ async def get_otp_recycle_list(user=Depends(auth_required)):
 @router.put("", dependencies=[Depends(cloud_enabled)])
 async def delete_otp(body: DeleteBody, user=Depends(auth_required)):
     digest = hashlib.md5(body.uri.encode()).hexdigest()
-    await Otp.annotate(digest=RawSQL("digest")).filter(digest=digest, user=user).update(
-        is_active=False
-    )
+    await Otp.filter(digest=digest, user=user).update(is_active=False)
 
 
 @router.delete("/{pk}/recycle", dependencies=[Depends(cloud_enabled)])

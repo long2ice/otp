@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 sentry-sdk = { version = "*", extras = ["fastapi"] }
-aerich = "*"
+aerich = { git = "https://github.com/tortoise/aerich.git", branch = "dev" }
 tortoise-orm = { version = "*", extras = ["asyncmy"] }
 fastapi = "*"
 uvicorn = "*"
@@ -17,7 +17,7 @@ python-dotenv = "*"
 pyotp = "*"
 pyjwt = "*"
 wechatpy = "*"
-httpx = {version = "*", extras = ["http2"]}
+httpx = { version = "*", extras = ["http2"] }
 aiofiles = "^22.1.0"
 cryptography = "*"
 cachetools = "*"

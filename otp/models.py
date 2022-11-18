@@ -15,9 +15,14 @@ class User(TimestampedModel):
     expired_date = fields.DateField(null=True)
 
 
+class DigestField(fields.CharField):
+    has_db_field = False
+
+
 class Otp(TimestampedModel):
     user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField("models.User")
     uri = fields.CharField(max_length=255, unique=True)
+    digest = DigestField(max_length=32, unique=True)
     is_active = fields.BooleanField(default=True)
     deleted_at = fields.DatetimeField(null=True)
 
