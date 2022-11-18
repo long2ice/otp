@@ -15,7 +15,7 @@ class User(TimestampedModel):
     expired_date = fields.DateField(null=True)
 
 
-class DigestField(fields.CharField):
+class DigestField(fields.CharField):  # type: ignore
     has_db_field = False
 
 
