@@ -1,7 +1,6 @@
 from aerich import Command
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
-from fastapi.staticfiles import StaticFiles
 from tortoise.contrib.fastapi import register_tortoise
 from tortoise.exceptions import DoesNotExist
 
@@ -15,6 +14,7 @@ from otp.exceptions import (
 from otp.log import init_logging
 from otp.routers import router
 from otp.settings import TORTOISE_ORM, settings
+from otp.static import CachedStaticFiles
 
 if settings.DEBUG:
     app = FastAPI(debug=settings.DEBUG)
@@ -33,7 +33,7 @@ app.add_exception_handler(HTTPException, custom_http_exception_handler)
 app.add_exception_handler(DoesNotExist, not_exists_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, exception_handler)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", CachedStaticFiles(directory="static"), name="static")
 
 
 @app.on_event("startup")
